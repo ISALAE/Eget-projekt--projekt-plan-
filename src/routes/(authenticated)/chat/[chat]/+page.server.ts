@@ -6,12 +6,11 @@ export const load: PageServerLoad = async ({ params, locals }) => {
   if (params.chat) {
     try {
       const chat = await database.chat.findUniqueOrThrow({
-        where: { id: Number(params.chat) },
+        where: { id: parseInt(params.chat) },
         include: {
           messages: {
             include: {
               author: { select: { username: true, id: true } },
-              likedBy: { select: { id: true } },
             },
           },
         },
@@ -23,7 +22,6 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
         chat.messages.forEach((e) => {
           e.own = e.authorId == user?.id;
-          e.liked = e.likedBy.find((usr) => usr.id == user?.id) != undefined;
         });
 
         return { chat };
@@ -76,7 +74,6 @@ export const actions: Actions = {
               },
               include: {
                 author: { select: { username: true, id: true } },
-                likedBy: { select: { id: true } },
               },
             });
 
@@ -107,64 +104,6 @@ export const actions: Actions = {
           }
         }
       }
-    } else throw error(404, "forum not found");
+    } else throw error(404, "chat not found");
   },
-  like: async ({ request, params, locals }) => {
-    if (params.chat) {
-      const form = await request.formData();
-      const messageId = form.get("messageId")?.toString();
-      if (!messageId) {
-        return fail(400, { error: "missing messageId" });
-      } else {
-        const chat = await database.chat.findUnique({
-          where: { id: Number(params.chat) },
-        });
-        if (chat?.id == Number(params.chat)) {
-          try {
-            const message = await database.message.findUniqueOrThrow({
-              where: { id: Number(messageId) },
-            });
-            await database.user.update({
-              where: { session: locals.userid },
-              data: {
-                likes: { connect: { id: message.id } },
-              },
-            });
-          } catch (e) {
-            console.log(e);
-            return fail(400, { error: "message like error" });
-          }
-        }
-      }
-    } else throw error(404, "forum not found");
-  },
-  unlike: async ({ request, params, locals }) => {
-    if (params.chat) {
-      const form = await request.formData();
-      const messageId = form.get("messageId")?.toString();
-      if (!messageId) {
-        return fail(400, { error: "missing messageId" });
-      } else {
-        const chat = await database.chat.findUnique({
-          where: { id: Number(params.chat) },
-        });
-        if (chat?.id == Number(params.chat)) {
-          try {
-            const message = await database.message.findUniqueOrThrow({
-              where: { id: Number(messageId) },
-            });
-            await database.user.update({
-              where: { session: locals.userid },
-              data: {
-                likes: { disconnect: { id: message.id } },
-              },
-            });
-          } catch (e) {
-            console.log(e);
-            return fail(400, { error: "message unlike error" });
-          }
-        }
-      }
-    } else throw error(404, "forum not found");
-  },
-};
+}

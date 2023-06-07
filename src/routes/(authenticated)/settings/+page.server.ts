@@ -5,17 +5,17 @@ import {database} from '$lib/database'
 
 export const actions: Actions = {
 	logout: async ({ request, cookies }) => {
-		const url = new URL(request.url);
- 		const chatId = url.pathname.split('/')[2];
-		
-		cookies.delete('userid')
-		
-		if (chatId) {
-			throw redirect(302, `/chat/${chatId}/login`);
-		  } else {
-			throw redirect(302, '/login');
-		  }
+		const currentPath = new URL(request.url).pathname;
 
+		cookies.delete('userid')
+		// Temporary redirection fix (ofc doesn't work)
+		const redirectUrls = ['/chat/1', '/chat/2', '/chat/3', '/chat/4', '/chat/5', '/chat/6', '/chat/7', '/chat/8', '/chat/9', '/chat/10', '/chat/11', '/chat/12', '/chat/13', '/chat/14', '/chat/15', '/chat/16', '/chat/17', '/chat/18', '/chat/19', '/chat/20'];
+
+		if (redirectUrls.includes(currentPath)) {
+			throw redirect(302, '/login');
+		} else {
+			throw redirect(302, '/');
+		}
 	},
 	deleteaccount: async ({ request, locals, cookies }) => {
 		

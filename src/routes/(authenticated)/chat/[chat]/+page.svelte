@@ -5,8 +5,10 @@
     import { onDestroy } from "svelte";
     import type { ActionData, PageServerData } from "./$types";
     import ReconnectingEventSource from "reconnecting-eventsource";
+    import type { LayoutServerData } from "../../$types";
   
     export let data: PageServerData;
+    export let layoutData: LayoutServerData;
     export let form: ActionData;
   
     let inputRef: HTMLElement;
@@ -30,7 +32,11 @@
       onDestroy(() => {
         es.close();
       });
-    }
+    };
+
+    const increaseMessageCount = () => {
+      layoutData.messages = (layoutData.messages ?? 0) + 1;
+    };
   </script>
   
   <h1>Messages</h1>
@@ -72,7 +78,7 @@
       id=""
       class="rounded-input"
     />
-    <button type="submit" style="margin-left: 5px; font-style: italic;">Send message</button>
+    <button type="submit" style="margin-left: 5px; font-style: italic;" on:click={increaseMessageCount}>Send message</button>
     {#if form?.error}
       {form.error}
     {/if}

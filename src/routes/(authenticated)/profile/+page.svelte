@@ -14,4 +14,4 @@
         <p class="text-2xl font-medium text-gray-900 dark:text-white">{data.messages}</p>
         <p class="text-sm text-gray-500 dark:text-gray-400">Messages sent</p>
     </div>
-</div>
+</div>  
