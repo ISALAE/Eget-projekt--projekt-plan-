@@ -9,9 +9,16 @@
 	
 </script>
 
+<style>
+	.placeholder {
+		border-radius: 5px;
+		padding-left: 5px;
+	}
+</style>
+
 <form method="POST" action="?/login">
-	<input style="margin-left: 5px;" type="username" name="username" />
-	<input type="password" name="password" />
+	<input style="margin-left: 5px;" type="username" name="username" placeholder="username" class="placeholder"/>
+	<input type="password" name="password" placeholder="password" class="placeholder"/>
 	<button>LOGIN</button>
 </form>
 
