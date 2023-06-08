@@ -24,6 +24,7 @@
   
         /* add the new message */
         if (message) {
+          console.log(message )
           message.timestamp = new Date(message.timestamp.toString());
           messages = [message, ...messages];
         }
@@ -78,7 +79,7 @@
       id=""
       class="rounded-input"
     />
-    <button type="submit" style="margin-left: 5px; font-style: italic;" on:click={increaseMessageCount}>Send message</button>
+    <button type="submit" class="custom-button button-click-effect" on:click={increaseMessageCount}>Send message</button>
     {#if form?.error}
       {form.error}
     {/if}
@@ -86,6 +87,45 @@
   </form>
   
   <style>
+
+    @keyframes ChatBoxes {
+    0% {
+      transform: scaleY(0.9);
+    }
+    50% {
+      transform: scaleY(1);
+    }
+    100% {
+      transform: scaleY(0.9);
+    }
+  }
+
+  .button-click-effect {
+    transition: transform 0.2s;
+  }
+
+  .button-click-effect:active {
+    transform: scale(0.95);
+  }
+
+  .custom-button {
+    margin-left: 5px;
+    text-align: center;
+    border-radius: 5px;
+    background-color: lime;
+    color: gray;
+    padding: 0.5px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.5s;
+  }
+
+  .custom-button:hover {
+    background-color: #2ecc71;
+  }
+
     .rounded-input{
     border-radius: 5px;
     text-align: center;
@@ -105,10 +145,12 @@
       margin: 4px;
       padding: 8px;
       background-color: rgba(44, 93, 125, 0.3);
+      animation: ChatBoxes 1.5s infinite;
     }
   
     .message.own {
       place-items: end;
       background-color: rgba(95, 158, 160, 0.3);
     }
+
   </style>

@@ -12,7 +12,7 @@ export const GET: RequestHandler = async ({ locals, params }) => {
         const user = await database.user.findUniqueOrThrow({
           where: { session: locals.userid },
         });
-
+ 
         const stream = new ReadableStream({
           start(controller) {
             /* save the controller for the stream so that we can */
@@ -21,7 +21,6 @@ export const GET: RequestHandler = async ({ locals, params }) => {
           },
           cancel() {
             /* remove the stream */
-            const stream = streams[params.chat];
             delete streams[locals.userid!];
           },
         });

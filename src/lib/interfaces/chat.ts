@@ -1,8 +1,8 @@
-import type { message, user } from "@prisma/client";
-export type loadResult = {members: user[], messages: message[]}
+import type { Message, user } from "@prisma/client";
+export type loadResult = {members: user[], messages: Message[]}
 export const _streams: Record<string, {controller: ReadableStreamDefaultController<string>, dm: string}> = {}
 
-export type chatLoadResult = {messages: message[], members: {username: string, profileimage: string, profileURL: string }[]} 
+export type chatLoadResult = {messages: Message[], members: {username: string, profileimage: string, profileURL: string }[]} 
 
 export interface chater {
     /**
